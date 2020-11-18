@@ -1,0 +1,14 @@
+[
+  {
+      "model": "levelupapi.game",
+      "pk": 1,
+      "fields": {
+          "title": "Uno",
+          "game_type": 1,
+          "maker": "Hasbro",
+          "number_of_players": 5,
+          "gamer": 1,
+          "skill_level": 2
+      }
+  }
+]
