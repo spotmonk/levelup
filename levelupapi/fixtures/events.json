@@ -1,0 +1,12 @@
+[
+  {
+      "model": "levelupapi.Event",
+      "pk": 1,
+      "fields": {
+          "description": "Having fun",
+          "game": 1,
+          "organizer": 1,
+          "datetime": "2020-08-28T14:51:39.989Z"
+      }
+  }
+]
