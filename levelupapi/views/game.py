@@ -7,11 +7,14 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
 from levelupapi.models import Game, GameType, Gamer
-
+from rest_framework.permissions import DjangoModelPermissions
 
 class GamesViewSet(ViewSet):
     """Level up games"""
-
+    
+    permission_classes = [ DjangoModelPermissions ]
+    queryset = Game.objects.none()
+    
     def create(self, request):
         """Handle POST operations
         Returns:
@@ -35,7 +38,7 @@ class GamesViewSet(ViewSet):
         # whose `id` is what the client passed as the
         # `gameTypeId` in the body of the request.
         gametype = GameType.objects.get(pk=request.data["gameTypeId"])
-        game.game_type = gametype
+        game.gametype = gametype
 
         # Try to save the new game to the database, then
         # serialize the game instance as JSON, and send the
@@ -67,6 +70,9 @@ class GamesViewSet(ViewSet):
             game = Game.objects.get(pk=pk)
             serializer = GameSerializer(game, context={'request': request})
             return Response(serializer.data)
+        
+        except Game.DoesNotExist as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
         except Exception as ex:
             return HttpResponseServerError(ex)
 
@@ -143,5 +149,5 @@ class GameSerializer(serializers.HyperlinkedModelSerializer):
             view_name='game',
             lookup_field='id'
         )
-        fields = ('id', 'url', 'title', 'maker', 'number_of_players', 'skill_level', 'game_type')
+        fields = ('id', 'url', 'title', 'maker', 'number_of_players', 'skill_level', 'gametype')
         depth = 1
